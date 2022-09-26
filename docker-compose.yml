@@ -1,0 +1,29 @@
+version: '3'
+
+networks:
+  webapp:
+
+services:
+  web:
+    image: nginx:1.23-alpine
+    ports:
+      - "${PORT_WEB}:80"
+    volumes:
+      - ./www:/www:rw
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./logs/nginx:/var/logs/nginx:rw
+    depends_on:
+      - php
+    networks:
+      - webapp
+  php:
+    image: rcsnjszg/php:8.1-fpm-alpine-v0.1
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - ./www:/www:rw
+    networks:
+      - webapp
