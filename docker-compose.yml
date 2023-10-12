@@ -5,7 +5,7 @@ networks:
 
 services:
   web:
-    image: nginx:1.23-alpine
+    image: nginx:1.25-alpine3.17
     ports:
       - "${PORT_WEB}:80"
     volumes:
@@ -18,7 +18,7 @@ services:
     networks:
       - webapp
   php:
-    image: rcsnjszg/php:8.1-fpm-alpine-v0.1
+    image: php:8.2-fpm-alpine3.17 
     build:
       context: ./docker/php
       dockerfile: Dockerfile
